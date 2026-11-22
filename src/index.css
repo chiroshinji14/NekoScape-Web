@@ -24,10 +24,10 @@
   --color-ns-sage: #3E8A4C;
   --color-ns-cyan: #1A8CA8;
 
-  /* Typography */
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  /* Typography: cozy rounded display + calm readable body */
+  --font-display: "Fredoka", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Consolas", ui-monospace, SFMono-Regular, monospace;
 
   /* Corner radius tokens (matching UiDesignSystem.cs) */
   --radius-popover: 24px;
@@ -103,7 +103,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     color: var(--ns-ink);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
   }
 
   /* Accessible keyboard focus ring: 2px honey-amber with warm offset */

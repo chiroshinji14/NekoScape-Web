@@ -191,8 +191,8 @@ export function ScrollExpandHero({ onOpenDownload }: ScrollExpandHeroProps) {
               <img
                 src={HERO_SEQUENCE_IMAGES.golden}
                 alt="Cats lounging on a sunlit oak study floor in NekoScape"
-                width={1600}
-                height={900}
+                width={1920}
+                height={1080}
                 loading="eager"
                 fetchPriority="high"
                 className="h-full w-full object-cover"

@@ -41,7 +41,7 @@ export interface SceneDefinition {
   accentHex: string;
   featuredProps: readonly string[];
   lightingGrades: Record<LightingMode, SceneLightingGrade>;
-  imagePath: string;
+  images: Record<LightingMode, string>;
 }
 
 export type BreedId =

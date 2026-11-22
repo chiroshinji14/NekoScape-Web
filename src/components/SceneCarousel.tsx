@@ -27,25 +27,17 @@ function CarouselTile({
   linkToScenes,
   isDuplicate = false,
 }: CarouselTileProps) {
-  const grade = scene.lightingGrades[lightingMode];
-
   const content = (
     <>
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[16px] bg-ns-elevated">
         <img
-          src={scene.imagePath}
+          src={scene.images[lightingMode]}
           alt={scene.label}
-          width={480}
-          height={270}
+          width={1920}
+          height={1080}
           loading="eager"
           decoding="async"
-          style={{ filter: grade.cssFilter }}
           className="h-full w-full object-cover transition-transform duration-300 ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:scale-[1.03]"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 transition-colors duration-300 ease-[var(--ease-out)]"
-          style={{ backgroundColor: grade.overlayColor }}
         />
       </div>
       <p className="mt-2.5 text-sm font-medium text-ns-ink">{scene.label}</p>

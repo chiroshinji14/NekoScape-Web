@@ -129,16 +129,16 @@ function renderSequenceFrame(
     drawCoverImage(ctx, images.night, w, h, zoom + 0.014, panX * 0.7, panY, nightWeight);
   }
 
-  // Warm diagonal sunbeams (Day -> Golden)
-  const beamStrength = clamp01(dayWeight * 0.5 + goldenWeight * 0.9);
+  // Subtle diagonal sunbeam shimmer (Day -> Golden)
+  const beamStrength = clamp01(dayWeight * 0.3 + goldenWeight * 0.55);
   if (beamStrength > 0.01) {
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-    const sweepShift = p * w * 0.26;
+    const sweepShift = p * w * 0.22;
     const shafts = [
-      { x0: -0.04 * w + sweepShift, topW: w * 0.16, botShift: w * 0.24, op: 0.13 },
-      { x0: 0.15 * w + sweepShift, topW: w * 0.2, botShift: w * 0.28, op: 0.17 },
-      { x0: 0.38 * w + sweepShift, topW: w * 0.11, botShift: w * 0.2, op: 0.1 },
+      { x0: -0.04 * w + sweepShift, topW: w * 0.16, botShift: w * 0.24, op: 0.08 },
+      { x0: 0.15 * w + sweepShift, topW: w * 0.2, botShift: w * 0.28, op: 0.1 },
+      { x0: 0.38 * w + sweepShift, topW: w * 0.11, botShift: w * 0.2, op: 0.06 },
     ];
 
     for (const shaft of shafts) {
@@ -185,15 +185,15 @@ function renderSequenceFrame(
   }
   ctx.restore();
 
-  // Warm desk lamp pool at night
+  // Soft warm bloom around the study desk lamp at night
   if (nightWeight > 0.02) {
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-    const lampX = w * 0.52;
-    const lampY = h * 0.54;
-    const lampGrad = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, w * 0.34);
-    lampGrad.addColorStop(0, `rgba(255, 204, 124, ${0.26 * nightWeight})`);
-    lampGrad.addColorStop(0.55, `rgba(240, 166, 82, ${0.1 * nightWeight})`);
+    const lampX = w * 0.815;
+    const lampY = h * 0.31;
+    const lampGrad = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, w * 0.16);
+    lampGrad.addColorStop(0, `rgba(255, 204, 124, ${0.14 * nightWeight})`);
+    lampGrad.addColorStop(0.55, `rgba(240, 166, 82, ${0.06 * nightWeight})`);
     lampGrad.addColorStop(1, 'rgba(240, 166, 82, 0)');
     ctx.fillStyle = lampGrad;
     ctx.fillRect(0, 0, w, h);
