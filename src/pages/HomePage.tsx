@@ -4,8 +4,8 @@ import { CaretRight, Check, Plus } from '@phosphor-icons/react';
 import { ScrollExpandHero } from '../components/ScrollExpandHero';
 import { ImageScrollSequence } from '../components/ImageScrollSequence';
 import { SceneCarousel } from '../components/SceneCarousel';
+import { FeaturesBento } from '../components/FeaturesBento';
 import { BreedShowcase } from '../components/BreedShowcase';
-import { FEATURE_HIGHLIGHTS } from '../data/features';
 import { PRICING_TIERS } from '../data/pricing';
 import { FAQ_ITEMS } from '../data/faq';
 
@@ -66,21 +66,7 @@ export function HomePage({ onOpenDownload }: HomePageProps) {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2">
-            {FEATURE_HIGHLIGHTS.map((item) => (
-              <div
-                key={item.id}
-                className="border-t border-[var(--ns-hairline)] pt-6"
-              >
-                <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-ns-ink sm:text-2xl">
-                  {item.title}
-                </h3>
-                <p className="mt-2 max-w-[44ch] text-base leading-relaxed text-ns-ink-secondary">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <FeaturesBento />
 
           <div className="mt-24 border-t border-[var(--ns-hairline)] pt-20">
             <BreedShowcase />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { List, X } from '@phosphor-icons/react';
 import { useLenis } from '../hooks/useLenis';
@@ -21,6 +21,9 @@ const NAV_ENTRIES: readonly NavEntry[] = [
 
 export function Navbar({ onOpenDownload }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hiddenByHero, setHiddenByHero] = useState(false);
+  const [hasFocusWithin, setHasFocusWithin] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { scrollTo, reducedMotion } = useLenis();
@@ -28,6 +31,50 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    const isHomeView = location.pathname === '/' || location.pathname === '/download';
+    if (!isHomeView) {
+      setHiddenByHero(false);
+      return;
+    }
+
+    let rafId = 0;
+
+    const evaluateVisibility = () => {
+      rafId = 0;
+      const heroStage = document.querySelector<HTMLElement>('[data-hero-stage]');
+      if (!heroStage) {
+        setHiddenByHero(false);
+        return;
+      }
+
+      const navHeight = headerRef.current?.offsetHeight ?? 56;
+      const threshold = navHeight + 16;
+      const rect = heroStage.getBoundingClientRect();
+      const isOverHero = rect.top <= threshold && rect.bottom > threshold;
+      setHiddenByHero((prev) => (prev === isOverHero ? prev : isOverHero));
+    };
+
+    const scheduleEvaluate = () => {
+      if (rafId !== 0) return;
+      rafId = window.requestAnimationFrame(evaluateVisibility);
+    };
+
+    evaluateVisibility();
+    window.addEventListener('scroll', scheduleEvaluate, { passive: true });
+    window.addEventListener('resize', scheduleEvaluate, { passive: true });
+    window.addEventListener('ns:hero-frame', scheduleEvaluate);
+
+    return () => {
+      if (rafId !== 0) {
+        window.cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener('scroll', scheduleEvaluate);
+      window.removeEventListener('resize', scheduleEvaluate);
+      window.removeEventListener('ns:hero-frame', scheduleEvaluate);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -70,8 +117,22 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
     onOpenDownload();
   };
 
+  const isCurtainedUp = hiddenByHero && !mobileOpen && !hasFocusWithin;
+
   return (
-    <header className="sticky top-0 z-40 w-full">
+    <header
+      ref={headerRef}
+      onFocus={() => setHasFocusWithin(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setHasFocusWithin(false);
+        }
+      }}
+      className={[
+        'sticky top-0 z-40 w-full ns-nav-curtain',
+        isCurtainedUp ? 'ns-nav-curtain--hidden' : '',
+      ].join(' ')}
+    >
       <div className="ns-glass-nav">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
           <Link

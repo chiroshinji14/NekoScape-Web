@@ -43,16 +43,31 @@ export function ScrollExpandHero({ onOpenDownload }: ScrollExpandHeroProps) {
     mm.add(
       '(min-width: 900px) and (prefers-reduced-motion: no-preference)',
       () => {
+        const marginY = 24;
+
+        const getExpandedMetrics = () => {
+          const maxW = Math.max(320, pinEl.clientWidth * 0.875);
+          const maxH = Math.max(240, pinEl.clientHeight - marginY * 2);
+          const baseW = Math.max(stageEl.offsetWidth, 1);
+          const baseH = Math.max(stageEl.offsetHeight, 1);
+          const scale = Math.min(maxW / baseW, maxH / baseH);
+          const targetCenterY = pinEl.clientHeight / 2;
+          return { scale, targetCenterY };
+        };
+
         gsap.set(stageEl, {
           clipPath: 'inset(0px round 22px)',
           transformOrigin: '50% 50%',
         });
 
         const tl = gsap.timeline({
+          onUpdate: () => {
+            window.dispatchEvent(new Event('ns:hero-frame'));
+          },
           scrollTrigger: {
             trigger: sectionEl,
             start: 'top top',
-            end: '+=110%',
+            end: '+=75%',
             scrub: 0.6,
             pin: pinEl,
             anticipatePin: 1,
@@ -74,13 +89,9 @@ export function ScrollExpandHero({ onOpenDownload }: ScrollExpandHeroProps) {
         tl.to(
           stageEl,
           {
-            y: () => pinEl.clientHeight / 2 - getOffsetCenterY(stageEl, pinEl),
-            scale: () =>
-              Math.max(
-                pinEl.clientWidth / Math.max(stageEl.offsetWidth, 1),
-                pinEl.clientHeight / Math.max(stageEl.offsetHeight, 1),
-              ) * 1.01,
-            clipPath: 'inset(0px round 0px)',
+            y: () => getExpandedMetrics().targetCenterY - getOffsetCenterY(stageEl, pinEl),
+            scale: () => getExpandedMetrics().scale,
+            clipPath: 'inset(0px round 16px)',
             duration: 1,
             ease: 'none',
           },
@@ -182,6 +193,7 @@ export function ScrollExpandHero({ onOpenDownload }: ScrollExpandHeroProps) {
         <div className="relative z-10 mx-auto mt-10 w-full max-w-6xl px-5 sm:mt-12 sm:px-8">
           <div
             ref={stageFrameRef}
+            data-hero-stage
             className="relative aspect-[16/9] w-full overflow-hidden rounded-[22px] bg-ns-elevated will-change-transform"
             style={{
               boxShadow: 'var(--ns-specular-top), var(--ns-shadow-elevated)',

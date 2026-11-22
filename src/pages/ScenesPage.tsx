@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { SCENES } from '../data/scenes';
 import type { LightingMode } from '../types/nekoscape';
-import { SceneCarousel } from '../components/SceneCarousel';
 import { SceneCard } from '../components/SceneCard';
 
 export interface ScenesPageProps {
@@ -58,11 +57,7 @@ export function ScenesPage({ onOpenDownload }: ScenesPageProps) {
         </div>
       </header>
 
-      <section aria-label="Scene previews" className="mt-14">
-        <SceneCarousel scenes={SCENES} lightingMode={lightingMode} />
-      </section>
-
-      <section aria-label="All rooms" className="mx-auto mt-20 max-w-6xl px-5 sm:px-8">
+      <section aria-label="All rooms" className="mx-auto mt-14 max-w-6xl px-5 sm:px-8">
         <div
           style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))' }}
           className="grid gap-x-7 gap-y-10"

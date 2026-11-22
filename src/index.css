@@ -132,6 +132,19 @@
     0 8px 24px -8px rgba(58, 38, 24, 0.08);
 }
 
+.ns-nav-curtain {
+  transform: translate3d(0, 0, 0);
+  transition-property: transform;
+  transition-duration: 520ms;
+  transition-timing-function: var(--ease-drawer);
+  will-change: transform;
+}
+
+.ns-nav-curtain--hidden {
+  transform: translate3d(0, calc(-100% - 24px), 0);
+  pointer-events: none;
+}
+
 .ns-glass-panel {
   background-color: rgba(237, 226, 211, 0.82);
   backdrop-filter: blur(20px) saturate(180%);
