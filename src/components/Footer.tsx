@@ -12,11 +12,11 @@ export function Footer({ onOpenDownload }: FooterProps) {
 
   const handleHashLink = (hash: string) => {
     if (location.pathname === '/') {
-      const target = document.querySelector<HTMLElement>(hash);
-      if (target) {
-        scrollTo(target, { offset: -72, immediate: reducedMotion });
+      if (location.hash !== hash) {
+        navigate(`/${hash}`, { replace: true });
+      } else {
+        scrollTo(hash, { offset: -72, immediate: reducedMotion });
       }
-      navigate(`/${hash}`, { replace: true });
       return;
     }
     navigate(`/${hash}`);
@@ -34,7 +34,7 @@ export function Footer({ onOpenDownload }: FooterProps) {
             className="ns-pressable inline-flex min-h-[44px] items-center gap-2.5 text-ns-ink"
           >
             <img
-              src="/assets/nekoscape-logo.png"
+              src="/assets/nekoscape-logo.webp"
               width={24}
               height={24}
               alt="NekoScape"

@@ -1,9 +1,17 @@
-import type { LightingMode, SceneCategory, SceneDefinition } from '../types/nekoscape';
+import type { LightingMode, SceneCategory, SceneDefinition, SceneId } from '../types/nekoscape';
+
+function sceneImages(id: SceneId): Record<LightingMode, string> {
+  return {
+    day: `/images/scenes/${id}-day.webp`,
+    golden: `/images/scenes/${id}-golden.webp`,
+    night: `/images/scenes/${id}-night.webp`,
+  };
+}
 
 export const HERO_SEQUENCE_IMAGES = {
-  day: '/images/scenes/hero-day.jpg',
-  golden: '/images/scenes/hero-golden.jpg',
-  night: '/images/scenes/hero-night.jpg',
+  day: '/images/scenes/study-day.webp',
+  golden: '/images/scenes/study-golden.webp',
+  night: '/images/scenes/study-night.webp',
 } as const;
 
 export const SCENE_CATEGORIES: readonly { id: 'all' | SceneCategory; label: string }[] = [
@@ -68,7 +76,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 204, 124, 0.24)',
       },
     },
-    imagePath: '/images/scenes/study.jpg',
+    images: sceneImages('study'),
   },
   {
     id: 'tatami',
@@ -117,7 +125,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 194, 108, 0.25)',
       },
     },
-    imagePath: '/images/scenes/tatami.jpg',
+    images: sceneImages('tatami'),
   },
   {
     id: 'garden',
@@ -166,7 +174,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(226, 245, 107, 0.20)',
       },
     },
-    imagePath: '/images/scenes/garden.jpg',
+    images: sceneImages('garden'),
   },
   {
     id: 'cafe',
@@ -216,7 +224,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 206, 130, 0.24)',
       },
     },
-    imagePath: '/images/scenes/cafe.jpg',
+    images: sceneImages('cafe'),
   },
   {
     id: 'living_room',
@@ -265,7 +273,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 166, 84, 0.26)',
       },
     },
-    imagePath: '/images/scenes/living_room.jpg',
+    images: sceneImages('living_room'),
   },
   {
     id: 'rainy_window',
@@ -314,7 +322,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 202, 122, 0.24)',
       },
     },
-    imagePath: '/images/scenes/rainy_window.jpg',
+    images: sceneImages('rainy_window'),
   },
   {
     id: 'night_balcony',
@@ -363,7 +371,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 204, 116, 0.26)',
       },
     },
-    imagePath: '/images/scenes/night_balcony.jpg',
+    images: sceneImages('night_balcony'),
   },
   {
     id: 'kitchen',
@@ -412,7 +420,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 214, 146, 0.20)',
       },
     },
-    imagePath: '/images/scenes/kitchen.jpg',
+    images: sceneImages('kitchen'),
   },
   {
     id: 'bedroom',
@@ -461,7 +469,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 204, 138, 0.23)',
       },
     },
-    imagePath: '/images/scenes/bedroom.svg',
+    images: sceneImages('bedroom'),
   },
   {
     id: 'snowy_window',
@@ -510,7 +518,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 198, 126, 0.25)',
       },
     },
-    imagePath: '/images/scenes/snowy_window.jpg',
+    images: sceneImages('snowy_window'),
   },
   {
     id: 'sunbeam',
@@ -559,7 +567,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 218, 138, 0.20)',
       },
     },
-    imagePath: '/images/scenes/sunbeam.jpg',
+    images: sceneImages('sunbeam'),
   },
   {
     id: 'aquarium',
@@ -608,7 +616,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(116, 232, 246, 0.24)',
       },
     },
-    imagePath: '/images/scenes/aquarium.jpg',
+    images: sceneImages('aquarium'),
   },
   {
     id: 'rooftop',
@@ -657,7 +665,7 @@ export const SCENES: readonly SceneDefinition[] = [
         ambientGlow: 'rgba(255, 206, 118, 0.25)',
       },
     },
-    imagePath: '/images/scenes/rooftop.svg',
+    images: sceneImages('rooftop'),
   },
 ];
 

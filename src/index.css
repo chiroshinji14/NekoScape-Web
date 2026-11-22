@@ -24,10 +24,10 @@
   --color-ns-sage: #3E8A4C;
   --color-ns-cyan: #1A8CA8;
 
-  /* Typography */
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  /* Typography: cozy rounded display + calm readable body */
+  --font-display: "Fredoka", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Consolas", ui-monospace, SFMono-Regular, monospace;
 
   /* Corner radius tokens (matching UiDesignSystem.cs) */
   --radius-popover: 24px;
@@ -89,7 +89,7 @@
     background-color: var(--ns-base);
     color: var(--ns-ink);
     font-family: var(--font-sans);
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     text-rendering: optimizeLegibility;
   }
 
@@ -103,7 +103,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     color: var(--ns-ink);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
   }
 
   /* Accessible keyboard focus ring: 2px honey-amber with warm offset */
@@ -130,6 +130,19 @@
     var(--ns-specular-top),
     0 1px 0 var(--ns-hairline),
     0 8px 24px -8px rgba(58, 38, 24, 0.08);
+}
+
+.ns-nav-curtain {
+  transform: translate3d(0, 0, 0);
+  transition-property: transform;
+  transition-duration: 520ms;
+  transition-timing-function: var(--ease-drawer);
+  will-change: transform;
+}
+
+.ns-nav-curtain--hidden {
+  transform: translate3d(0, calc(-100% - 24px), 0);
+  pointer-events: none;
 }
 
 .ns-glass-panel {

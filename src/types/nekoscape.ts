@@ -41,7 +41,7 @@ export interface SceneDefinition {
   accentHex: string;
   featuredProps: readonly string[];
   lightingGrades: Record<LightingMode, SceneLightingGrade>;
-  imagePath: string;
+  images: Record<LightingMode, string>;
 }
 
 export type BreedId =
@@ -60,15 +60,209 @@ export type BreedId =
   | 'american_curl'
   | 'japanese_bobtail';
 
+export type CoatPatternKind =
+  | 'Solid'
+  | 'Shaded'
+  | 'Colorpoint'
+  | 'MittedColorpoint'
+  | 'TabbyMackerel'
+  | 'TabbyClassic'
+  | 'RosetteSpotted'
+  | 'RosetteMarbled'
+  | 'TickedAgouti'
+  | 'Tortoiseshell'
+  | 'Tuxedo'
+  | 'Calico'
+  | 'MikeCalico'
+  | 'Bicolor'
+  | 'HairlessSolid'
+  | 'HairlessBicolor';
+
+export type CoatTextureType =
+  | 'Longhair'
+  | 'ShaggyLonghair'
+  | 'SilkySemilong'
+  | 'SilkyMedium'
+  | 'Sleek'
+  | 'GlitterSleek'
+  | 'PlushDense'
+  | 'SilverPlush'
+  | 'ShortPlush'
+  | 'TickedShort'
+  | 'SilkyShort'
+  | 'Hairless'
+  | 'Shorthair';
+
+export type HeadShapeKind =
+  | 'Brachycephalic'
+  | 'Wedge'
+  | 'RoundJowls'
+  | 'CuteRound'
+  | 'AngularCheekbones'
+  | 'Classic'
+  | 'SquareMuzzle'
+  | 'OwlRound'
+  | 'WildBroad'
+  | 'BroadWedge'
+  | 'SculptedWedge'
+  | 'ModifiedWedge'
+  | 'ModifiedRound'
+  | 'ChiseledTriangle';
+
+export type EarShapeKind =
+  | 'SmallRounded'
+  | 'LargePointed'
+  | 'MediumRounded'
+  | 'PerkyAlert'
+  | 'GiantBat'
+  | 'MediumPointed'
+  | 'LynxTufted'
+  | 'FoldedOwl'
+  | 'AlertMediumRounded'
+  | 'MediumTilted'
+  | 'TallWidePointed'
+  | 'CuppedAlert'
+  | 'CurledBack'
+  | 'UprightLarge';
+
+export type EyeShapeKind =
+  | 'LargeRound'
+  | 'SlantedAlmond'
+  | 'Walnut'
+  | 'Lemon'
+  | 'Almond'
+  | 'OvalExpressive'
+  | 'SaucerRound'
+  | 'VividAlmond'
+  | 'SapphireOval'
+  | 'JewelRound'
+  | 'ExpressiveAlmond'
+  | 'BrightWalnut'
+  | 'LivelyOval';
+
+export type TailStyleKind =
+  | 'PlumeBrush'
+  | 'GiantPlume'
+  | 'SilkyPlume'
+  | 'FeatheredPlume'
+  | 'Whip'
+  | 'PlushBlunt'
+  | 'PlushTapered'
+  | 'PlumpUpright'
+  | 'HairlessWhip'
+  | 'MuscularLeopard'
+  | 'SleekTapered'
+  | 'SlenderDarkTipped'
+  | 'PomPomBobtail'
+  | 'Tapered';
+
+export interface BreedCoatVariant {
+  id: string;
+  name: string;
+  pattern: CoatPatternKind;
+  baseColor: string;
+  shadowColor: string;
+  highlightColor: string;
+  bellyColor: string;
+  muzzleColor: string;
+  pawColor: string;
+  earOuterColor: string;
+  earInnerColor: string;
+  noseColor: string;
+  eyeIrisColor: string;
+  eyeRimColor: string;
+  tailBaseColor: string;
+  tailTipColor: string;
+  stripeColor: string;
+  secondaryPatchColor: string;
+  whiskerColor: string;
+  pointColor: string;
+  wrinkleColor: string;
+}
+
+export interface BreedAnatomy {
+  body: {
+    bodyScale: number;
+    headToTorsoLen: number;
+    torsoToHipsLen: number;
+    hipRadius: number;
+    torsoRadius: number;
+    neckRadius: number;
+    shadowScale: number;
+    coatType: CoatTextureType;
+    furScallopCount: number;
+    furScallopDepth: number;
+    hasChestMane: boolean;
+    maneScale: number;
+    hasCheekRuffs: boolean;
+    cheekRuffScale: number;
+    hasWrinkles: boolean;
+    wrinkleAlpha: number;
+  };
+  head: {
+    shape: HeadShapeKind;
+    radiusX: number;
+    radiusY: number;
+    muzzleOffset: number;
+    noseSize: number;
+    noseOffsetX: number;
+    whiskerLength: number;
+    whiskerSpread: number;
+    whiskerCountPerSide: number;
+  };
+  ears: {
+    shape: EarShapeKind;
+    offsetX: number;
+    offsetY: number;
+    length: number;
+    width: number;
+    baseAngle: number;
+    hasEarTufts: boolean;
+    tuftLength: number;
+    hasLynxTips: boolean;
+    isFolded: boolean;
+    isCurledBack: boolean;
+    hasCartilageDetail: boolean;
+    innerScale: number;
+  };
+  eyes: {
+    shape: EyeShapeKind;
+    offsetX: number;
+    offsetY: number;
+    irisRadius: number;
+    slantRad: number;
+  };
+  legs: {
+    pawRadius: number;
+    pawAspectX: number;
+    frontReach: number;
+    backReach: number;
+    frontSideSpan: number;
+    backSideSpan: number;
+    tuckedClose: boolean;
+    fluffyPaws: boolean;
+    visibleToes: boolean;
+  };
+  tail: {
+    style: TailStyleKind;
+    segments: number;
+    segmentLength: number;
+    rootOffset: number;
+    rootWidth: number;
+    midWidth: number;
+    tipWidth: number;
+    swayAmpMultiplier: number;
+    swayFreqMultiplier: number;
+    restCurveBias: number;
+  };
+}
+
 export interface BreedDefinition {
   id: BreedId;
   label: string;
   summary: string;
-  earStyle: 'rounded' | 'pointed' | 'tufted' | 'folded' | 'bat' | 'curled';
-  tailStyle: 'plume' | 'sleek' | 'bobtail' | 'plush';
-  furColor: string;
-  accentColor: string;
-  eyeColor: string;
+  anatomy: BreedAnatomy;
+  coatVariants: readonly BreedCoatVariant[];
 }
 
 export interface FeatureHighlight {
@@ -85,7 +279,7 @@ export interface ChangelogEntry {
 }
 
 export interface PricingTier {
-  id: 'personal' | 'studio' | 'team';
+  id: 'personal' | 'studio';
   name: string;
   priceLabel: string;
   cadence: string;

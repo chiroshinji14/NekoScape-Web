@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { List, X } from '@phosphor-icons/react';
 import { useLenis } from '../hooks/useLenis';
@@ -21,6 +21,9 @@ const NAV_ENTRIES: readonly NavEntry[] = [
 
 export function Navbar({ onOpenDownload }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hiddenByHero, setHiddenByHero] = useState(false);
+  const [hasFocusWithin, setHasFocusWithin] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { scrollTo, reducedMotion } = useLenis();
@@ -28,6 +31,70 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    const isHomeView = location.pathname === '/' || location.pathname === '/download';
+    if (!isHomeView) {
+      setHiddenByHero(false);
+      return;
+    }
+
+    let rafId = 0;
+    let cachedStage: HTMLElement | null = document.querySelector<HTMLElement>('[data-hero-stage]');
+    let cachedNavHeight = headerRef.current?.offsetHeight ?? 56;
+    let pinnedHeroHidden: boolean | null = null;
+
+    const evaluateVisibility = () => {
+      rafId = 0;
+      if (!cachedStage || !cachedStage.isConnected) {
+        cachedStage = document.querySelector<HTMLElement>('[data-hero-stage]');
+      }
+      if (!cachedStage) {
+        setHiddenByHero(false);
+        return;
+      }
+
+      const threshold = cachedNavHeight + 16;
+      const rect = cachedStage.getBoundingClientRect();
+      const isOverHero = rect.top <= threshold && rect.bottom > threshold;
+      const nextHidden = pinnedHeroHidden === true ? isOverHero || rect.bottom > threshold : isOverHero;
+      setHiddenByHero((prev) => (prev === nextHidden ? prev : nextHidden));
+    };
+
+    const scheduleEvaluate = () => {
+      if (rafId !== 0) return;
+      rafId = window.requestAnimationFrame(evaluateVisibility);
+    };
+
+    const handleResize = () => {
+      cachedNavHeight = headerRef.current?.offsetHeight ?? 56;
+      scheduleEvaluate();
+    };
+
+    const handlePinnedHero = (event: Event) => {
+      const hidden = (event as CustomEvent<{ hidden: boolean }>).detail?.hidden ?? false;
+      pinnedHeroHidden = hidden;
+      if (hidden) {
+        setHiddenByHero((prev) => (prev ? prev : true));
+      } else {
+        scheduleEvaluate();
+      }
+    };
+
+    evaluateVisibility();
+    window.addEventListener('scroll', scheduleEvaluate, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('ns:hero-nav-hide', handlePinnedHero);
+
+    return () => {
+      if (rafId !== 0) {
+        window.cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener('scroll', scheduleEvaluate);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('ns:hero-nav-hide', handlePinnedHero);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -45,12 +112,10 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
   const handleHashNav = (hash: string) => {
     setMobileOpen(false);
     if (location.pathname === '/') {
-      const target = document.querySelector<HTMLElement>(hash);
-      if (target) {
-        scrollTo(target, { offset: -72, immediate: reducedMotion });
-      }
       if (location.hash !== hash) {
         navigate(`/${hash}`, { replace: true });
+      } else {
+        scrollTo(hash, { offset: -72, immediate: reducedMotion });
       }
       return;
     }
@@ -70,8 +135,22 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
     onOpenDownload();
   };
 
+  const isCurtainedUp = hiddenByHero && !mobileOpen && !hasFocusWithin;
+
   return (
-    <header className="sticky top-0 z-40 w-full">
+    <header
+      ref={headerRef}
+      onFocus={() => setHasFocusWithin(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setHasFocusWithin(false);
+        }
+      }}
+      className={[
+        'sticky top-0 z-40 w-full ns-nav-curtain',
+        isCurtainedUp ? 'ns-nav-curtain--hidden' : '',
+      ].join(' ')}
+    >
       <div className="ns-glass-nav">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
           <Link
@@ -80,7 +159,7 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
             className="ns-pressable inline-flex min-h-[44px] items-center gap-2.5 text-ns-ink"
           >
             <img
-              src="/assets/nekoscape-logo.png"
+              src="/assets/nekoscape-logo.webp"
               width={26}
               height={26}
               alt="NekoScape"
