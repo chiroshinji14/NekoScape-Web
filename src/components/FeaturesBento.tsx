@@ -1,21 +1,4 @@
-import {
-  FileText,
-  FileZip,
-  Folder,
-  Image as ImageIcon,
-  LockSimple,
-  MusicNote,
-  Palette,
-} from '@phosphor-icons/react';
-
-const MOCK_DESKTOP_ICONS = [
-  { label: 'Projects', icon: Folder, tint: 'text-ns-honey-hover' },
-  { label: 'Notes.txt', icon: FileText, tint: 'text-ns-ink-secondary' },
-  { label: 'Photos', icon: ImageIcon, tint: 'text-ns-cyan' },
-  { label: 'Music', icon: MusicNote, tint: 'text-ns-coral' },
-  { label: 'Design', icon: Palette, tint: 'text-ns-sage' },
-  { label: 'Archive.zip', icon: FileZip, tint: 'text-ns-ink-secondary' },
-] as const;
+import { LockSimple } from '@phosphor-icons/react';
 
 const CARD_STYLE = {
   boxShadow: 'var(--ns-specular-top), 0 0 0 1px var(--ns-hairline), var(--ns-shadow-ambient)',
@@ -33,36 +16,14 @@ export function FeaturesBento() {
         >
           <div className="relative aspect-[16/10] w-full overflow-hidden bg-ns-elevated lg:min-h-[280px] lg:flex-1">
             <img
-              src="/images/scenes/study-golden.webp"
-              alt="NekoScape golden study room behind desktop shortcut icons"
-              width={1920}
-              height={1080}
+              src="/images/feature_1st_image.webp"
+              alt="Real Windows desktop icons resting on a soft stone floor mat with NekoScape cats roaming beside them"
+              width={1061}
+              height={725}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover object-center transition-transform duration-500 ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+              className="h-full w-full object-cover object-left transition-transform duration-500 ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:scale-[1.02]"
             />
-
-            {/* Subtle frosted desktop shortcut cluster on the left side */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute top-4 left-4 grid grid-cols-3 gap-2 rounded-[16px] bg-ns-ivory/72 p-3 backdrop-blur-md sm:top-5 sm:left-5 sm:gap-2.5 sm:p-3.5"
-              style={{
-                boxShadow:
-                  'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 10px 24px -8px rgba(34, 24, 17, 0.18)',
-              }}
-            >
-              {MOCK_DESKTOP_ICONS.map(({ label, icon: Icon, tint }) => (
-                <div
-                  key={label}
-                  className="flex w-[64px] flex-col items-center gap-1 rounded-[10px] bg-ns-base/70 px-1.5 py-2 sm:w-[70px]"
-                >
-                  <Icon size={22} weight="duotone" className={tint} />
-                  <span className="max-w-full truncate text-[10px] font-semibold text-ns-ink">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
 
           <div className="p-6 sm:p-7">

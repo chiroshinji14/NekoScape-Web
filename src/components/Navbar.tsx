@@ -40,20 +40,25 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
     }
 
     let rafId = 0;
+    let cachedStage: HTMLElement | null = document.querySelector<HTMLElement>('[data-hero-stage]');
+    let cachedNavHeight = headerRef.current?.offsetHeight ?? 56;
+    let pinnedHeroHidden: boolean | null = null;
 
     const evaluateVisibility = () => {
       rafId = 0;
-      const heroStage = document.querySelector<HTMLElement>('[data-hero-stage]');
-      if (!heroStage) {
+      if (!cachedStage || !cachedStage.isConnected) {
+        cachedStage = document.querySelector<HTMLElement>('[data-hero-stage]');
+      }
+      if (!cachedStage) {
         setHiddenByHero(false);
         return;
       }
 
-      const navHeight = headerRef.current?.offsetHeight ?? 56;
-      const threshold = navHeight + 16;
-      const rect = heroStage.getBoundingClientRect();
+      const threshold = cachedNavHeight + 16;
+      const rect = cachedStage.getBoundingClientRect();
       const isOverHero = rect.top <= threshold && rect.bottom > threshold;
-      setHiddenByHero((prev) => (prev === isOverHero ? prev : isOverHero));
+      const nextHidden = pinnedHeroHidden === true ? isOverHero || rect.bottom > threshold : isOverHero;
+      setHiddenByHero((prev) => (prev === nextHidden ? prev : nextHidden));
     };
 
     const scheduleEvaluate = () => {
@@ -61,18 +66,33 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
       rafId = window.requestAnimationFrame(evaluateVisibility);
     };
 
+    const handleResize = () => {
+      cachedNavHeight = headerRef.current?.offsetHeight ?? 56;
+      scheduleEvaluate();
+    };
+
+    const handlePinnedHero = (event: Event) => {
+      const hidden = (event as CustomEvent<{ hidden: boolean }>).detail?.hidden ?? false;
+      pinnedHeroHidden = hidden;
+      if (hidden) {
+        setHiddenByHero((prev) => (prev ? prev : true));
+      } else {
+        scheduleEvaluate();
+      }
+    };
+
     evaluateVisibility();
     window.addEventListener('scroll', scheduleEvaluate, { passive: true });
-    window.addEventListener('resize', scheduleEvaluate, { passive: true });
-    window.addEventListener('ns:hero-frame', scheduleEvaluate);
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('ns:hero-nav-hide', handlePinnedHero);
 
     return () => {
       if (rafId !== 0) {
         window.cancelAnimationFrame(rafId);
       }
       window.removeEventListener('scroll', scheduleEvaluate);
-      window.removeEventListener('resize', scheduleEvaluate);
-      window.removeEventListener('ns:hero-frame', scheduleEvaluate);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('ns:hero-nav-hide', handlePinnedHero);
     };
   }, [location.pathname]);
 
@@ -92,12 +112,10 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
   const handleHashNav = (hash: string) => {
     setMobileOpen(false);
     if (location.pathname === '/') {
-      const target = document.querySelector<HTMLElement>(hash);
-      if (target) {
-        scrollTo(target, { offset: -72, immediate: reducedMotion });
-      }
       if (location.hash !== hash) {
         navigate(`/${hash}`, { replace: true });
+      } else {
+        scrollTo(hash, { offset: -72, immediate: reducedMotion });
       }
       return;
     }
@@ -141,7 +159,7 @@ export function Navbar({ onOpenDownload }: NavbarProps) {
             className="ns-pressable inline-flex min-h-[44px] items-center gap-2.5 text-ns-ink"
           >
             <img
-              src="/assets/nekoscape-logo.png"
+              src="/assets/nekoscape-logo.webp"
               width={26}
               height={26}
               alt="NekoScape"

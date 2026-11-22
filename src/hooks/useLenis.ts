@@ -43,6 +43,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
   const [reducedMotion, setReducedMotion] = useState<boolean>(getPrefersReducedMotion);
   const lenisRef = useRef<Lenis | null>(null);
+  const prevPathnameRef = useRef<string>(pathname);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -72,9 +73,9 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     }
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.12,
       smoothWheel: true,
+      wheelMultiplier: 1,
     });
 
     lenisRef.current = lenis;
@@ -103,59 +104,96 @@ export function LenisProvider({ children }: { children: ReactNode }) {
   }, [reducedMotion]);
 
   const scrollTo = useCallback<LenisContextValue['scrollTo']>((target, options) => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(target, {
-        offset: options?.offset ?? 0,
-        immediate: options?.immediate ?? false,
-        duration: options?.duration,
-      });
-      return;
-    }
-
     if (typeof window === 'undefined') {
       return;
     }
 
+    const offset = options?.offset ?? 0;
+    const immediate = options?.immediate ?? false;
+
+    let top: number | null = null;
     if (typeof target === 'number') {
-      window.scrollTo({
-        top: target + (options?.offset ?? 0),
-        behavior: options?.immediate ? 'auto' : 'smooth',
+      top = Math.max(0, Math.round(target + offset));
+    } else {
+      const element =
+        typeof target === 'string' ? document.querySelector<HTMLElement>(target) : target;
+      if (element) {
+        top = Math.max(0, Math.round(element.getBoundingClientRect().top + window.scrollY + offset));
+      }
+    }
+
+    if (top === null) {
+      return;
+    }
+
+    if (lenisRef.current) {
+      lenisRef.current.resize();
+      lenisRef.current.scrollTo(top, {
+        immediate,
+        duration: options?.duration,
+        force: true,
       });
       return;
     }
 
-    const element =
-      typeof target === 'string' ? document.querySelector<HTMLElement>(target) : target;
-    if (element) {
-      const top = element.getBoundingClientRect().top + window.scrollY + (options?.offset ?? 0);
-      window.scrollTo({
-        top,
-        behavior: options?.immediate ? 'auto' : 'smooth',
-      });
-    }
+    window.scrollTo({
+      top,
+      behavior: immediate ? 'auto' : 'smooth',
+    });
   }, []);
 
   useEffect(() => {
+    const isCrossRoute = prevPathnameRef.current !== pathname;
+    prevPathnameRef.current = pathname;
+
     if (hash) {
-      const timer = window.setTimeout(() => {
+      let raf1 = 0;
+      let raf2 = 0;
+      let settleTimer = 0;
+
+      const jumpToHash = (immediate: boolean) => {
         ScrollTrigger.refresh();
+        lenisRef.current?.resize();
         const el = document.querySelector<HTMLElement>(hash);
         if (el) {
-          scrollTo(el, { offset: -72, immediate: reducedMotion });
+          scrollTo(el, { offset: -72, immediate });
+          ScrollTrigger.update();
         }
-      }, 60);
+      };
 
-      return () => window.clearTimeout(timer);
+      if (isCrossRoute) {
+        // Wait for the destination route and any GSAP pins to mount before measuring target Y
+        raf1 = window.requestAnimationFrame(() => {
+          raf2 = window.requestAnimationFrame(() => {
+            jumpToHash(true);
+            settleTimer = window.setTimeout(() => {
+              jumpToHash(true);
+            }, 140);
+          });
+        });
+      } else {
+        raf1 = window.requestAnimationFrame(() => {
+          jumpToHash(reducedMotion);
+        });
+      }
+
+      return () => {
+        window.cancelAnimationFrame(raf1);
+        window.cancelAnimationFrame(raf2);
+        window.clearTimeout(settleTimer);
+      };
     }
 
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
+      lenisRef.current.resize();
+      lenisRef.current.scrollTo(0, { immediate: true, force: true });
     } else if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
 
     const rafId = window.requestAnimationFrame(() => {
       ScrollTrigger.refresh();
+      lenisRef.current?.resize();
     });
 
     return () => {

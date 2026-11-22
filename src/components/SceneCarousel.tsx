@@ -100,7 +100,7 @@ export function SceneCarousel({
             trigger: containerEl,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 0.65,
+            scrub: true,
           },
         },
       );
@@ -115,7 +115,7 @@ export function SceneCarousel({
             trigger: containerEl,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 0.65,
+            scrub: true,
           },
         },
       );

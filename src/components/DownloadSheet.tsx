@@ -85,7 +85,7 @@ export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <img
-              src="/assets/nekoscape-logo.png"
+              src="/assets/nekoscape-logo.webp"
               width={36}
               height={36}
               alt="NekoScape"

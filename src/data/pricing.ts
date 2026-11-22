@@ -19,7 +19,7 @@ export const PRICING_TIERS: readonly PricingTier[] = [
   {
     id: 'studio',
     name: 'Studio',
-    priceLabel: '$9',
+    priceLabel: '$2.49',
     cadence: 'One-time purchase',
     summary: 'Every room, every breed, yours to keep.',
     recommended: true,
@@ -29,21 +29,6 @@ export const PRICING_TIERS: readonly PricingTier[] = [
       'All 14 cat breeds and Kitten Mode',
       'Unlimited cats, toys, and ambient sounds',
       'Photo capture and free v2 updates',
-    ],
-  },
-  {
-    id: 'team',
-    name: 'Family & Team',
-    priceLabel: '$24',
-    cadence: 'Up to 5 Windows PCs',
-    summary: 'Share NekoScape across home or studio.',
-    recommended: false,
-    ctaLabel: 'Get Family Pack',
-    highlights: [
-      'Everything in Studio',
-      'License for 5 Windows computers',
-      'Offline portable install included',
-      'Early access to new rooms',
     ],
   },
 ];

@@ -89,7 +89,7 @@
     background-color: var(--ns-base);
     color: var(--ns-ink);
     font-family: var(--font-sans);
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     text-rendering: optimizeLegibility;
   }
 
