@@ -1,0 +1,297 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="dusk-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3E2B48" />
+      <stop offset="48%" stop-color="#7B4861" />
+      <stop offset="82%" stop-color="#C87464" />
+      <stop offset="100%" stop-color="#F2B478" />
+    </linearGradient>
+
+    <pattern id="terrace-pavers" width="220" height="220" patternUnits="userSpaceOnUse">
+      <rect width="220" height="220" fill="#46383B" />
+      <rect x="3" y="3" width="104" height="104" rx="4" fill="#8B7778" />
+      <rect x="113" y="3" width="104" height="104" rx="4" fill="#806C6E" />
+      <rect x="3" y="113" width="104" height="104" rx="4" fill="#756265" />
+      <rect x="113" y="113" width="104" height="104" rx="4" fill="#968282" />
+      <!-- Subtle warm sunset edge catch on pavers -->
+      <rect x="3" y="3" width="104" height="4" rx="2" fill="#D89B82" opacity="0.22" />
+      <rect x="113" y="3" width="104" height="4" rx="2" fill="#D89B82" opacity="0.18" />
+      <rect x="3" y="113" width="104" height="4" rx="2" fill="#D89B82" opacity="0.16" />
+      <rect x="113" y="113" width="104" height="4" rx="2" fill="#D89B82" opacity="0.24" />
+    </pattern>
+
+    <linearGradient id="kilim-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#BF655D" />
+      <stop offset="50%" stop-color="#AE5850" />
+      <stop offset="100%" stop-color="#9B4C45" />
+    </linearGradient>
+
+    <pattern id="kilim-weave" width="80" height="80" patternUnits="userSpaceOnUse">
+      <polygon points="40,8 72,40 40,72 8,40" fill="none" stroke="#F2C97D" stroke-width="2.6" opacity="0.62" />
+      <polygon points="40,22 58,40 40,58 22,40" fill="#484468" opacity="0.52" />
+      <circle cx="40" cy="40" r="4.5" fill="#F3E3D2" opacity="0.82" />
+    </pattern>
+
+    <radialGradient id="bulb-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE9BC" stop-opacity="0.95" />
+      <stop offset="32%" stop-color="#FFB862" stop-opacity="0.45" />
+      <stop offset="68%" stop-color="#FFB862" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#FFB862" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="sunset-wash" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#FFB876" stop-opacity="0.24" />
+      <stop offset="52%" stop-color="#DA7A8A" stop-opacity="0.11" />
+      <stop offset="100%" stop-color="#221222" stop-opacity="0.26" />
+    </linearGradient>
+
+    <radialGradient id="rooftop-vignette" cx="50%" cy="52%" r="72%">
+      <stop offset="48%" stop-color="#1C101A" stop-opacity="0" />
+      <stop offset="82%" stop-color="#1A0F18" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#100A12" stop-opacity="0.48" />
+    </radialGradient>
+
+    <filter id="drop-lg" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1C1018" flood-opacity="0.34" />
+    </filter>
+    <filter id="drop-md" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="2" dy="6" stdDeviation="7" flood-color="#1C1018" flood-opacity="0.36" />
+    </filter>
+  </defs>
+
+  <!-- Dusk Skyline Strip beyond Parapet -->
+  <rect x="0" y="0" width="1600" height="122" fill="url(#dusk-sky)" />
+  <!-- Soft distant city bokeh lights -->
+  <g opacity="0.55">
+    <circle cx="140" cy="54" r="18" fill="#FFE9BC" />
+    <circle cx="290" cy="40" r="11" fill="#FFB862" />
+    <circle cx="510" cy="64" r="22" fill="#FFD194" />
+    <circle cx="760" cy="44" r="15" fill="#FFE9BC" />
+    <circle cx="980" cy="58" r="20" fill="#FFB862" />
+    <circle cx="1220" cy="46" r="14" fill="#FFD194" />
+    <circle cx="1450" cy="62" r="24" fill="#FFE9BC" />
+  </g>
+
+  <!-- Terrace Paver Floor -->
+  <rect x="0" y="122" width="1600" height="778" fill="#5E4E52" />
+  <rect x="0" y="122" width="1600" height="778" fill="url(#terrace-pavers)" />
+
+  <!-- PROP 1: Brick Parapet Lookout Wall along top edge -->
+  <g filter="url(#drop-lg)">
+    <rect x="0" y="96" width="1600" height="70" fill="#5E4548" />
+    <rect x="0" y="102" width="1600" height="58" fill="#7D5858" />
+    <!-- Brick coping stones -->
+    <g fill="#946B68" stroke="#46383B" stroke-width="2">
+      <rect x="0" y="102" width="160" height="56" rx="4" />
+      <rect x="160" y="102" width="160" height="56" rx="4" />
+      <rect x="320" y="102" width="160" height="56" rx="4" />
+      <rect x="480" y="102" width="160" height="56" rx="4" />
+      <rect x="640" y="102" width="160" height="56" rx="4" />
+      <rect x="800" y="102" width="160" height="56" rx="4" />
+      <rect x="960" y="102" width="160" height="56" rx="4" />
+      <rect x="1120" y="102" width="160" height="56" rx="4" />
+      <rect x="1280" y="102" width="160" height="56" rx="4" />
+      <rect x="1440" y="102" width="160" height="56" rx="4" />
+    </g>
+    <!-- Sunset top rim highlight on brick parapet -->
+    <rect x="0" y="104" width="1600" height="6" fill="#F2B478" opacity="0.38" />
+  </g>
+
+  <!-- Dusk Kilim Outdoor Rug (Center) -->
+  <g filter="url(#drop-lg)">
+    <!-- Cream woven fringe ends -->
+    <g stroke="#F3E3D2" stroke-width="4" stroke-linecap="round" opacity="0.8">
+      <line x1="358" y1="290" x2="386" y2="290" />
+      <line x1="358" y1="320" x2="386" y2="320" />
+      <line x1="358" y1="350" x2="386" y2="350" />
+      <line x1="358" y1="380" x2="386" y2="380" />
+      <line x1="358" y1="410" x2="386" y2="410" />
+      <line x1="358" y1="440" x2="386" y2="440" />
+      <line x1="358" y1="470" x2="386" y2="470" />
+      <line x1="358" y1="500" x2="386" y2="500" />
+      <line x1="358" y1="530" x2="386" y2="530" />
+      <line x1="358" y1="560" x2="386" y2="560" />
+      <line x1="358" y1="590" x2="386" y2="590" />
+      <line x1="358" y1="620" x2="386" y2="620" />
+      <line x1="358" y1="650" x2="386" y2="650" />
+      <line x1="358" y1="680" x2="386" y2="680" />
+      <line x1="1214" y1="290" x2="1242" y2="290" />
+      <line x1="1214" y1="320" x2="1242" y2="320" />
+      <line x1="1214" y1="350" x2="1242" y2="350" />
+      <line x1="1214" y1="380" x2="1242" y2="380" />
+      <line x1="1214" y1="410" x2="1242" y2="410" />
+      <line x1="1214" y1="440" x2="1242" y2="440" />
+      <line x1="1214" y1="470" x2="1242" y2="470" />
+      <line x1="1214" y1="500" x2="1242" y2="500" />
+      <line x1="1214" y1="530" x2="1242" y2="530" />
+      <line x1="1214" y1="560" x2="1242" y2="560" />
+      <line x1="1214" y1="590" x2="1242" y2="590" />
+      <line x1="1214" y1="620" x2="1242" y2="620" />
+      <line x1="1214" y1="650" x2="1242" y2="650" />
+      <line x1="1214" y1="680" x2="1242" y2="680" />
+    </g>
+    <!-- Indigo border -->
+    <rect x="380" y="268" width="840" height="436" rx="18" fill="#484468" />
+    <!-- Terracotta kilim body -->
+    <rect x="398" y="286" width="804" height="400" rx="12" fill="url(#kilim-bg)" />
+    <rect x="398" y="286" width="804" height="400" rx="12" fill="url(#kilim-weave)" />
+    <!-- Inner golden trim frame -->
+    <rect x="412" y="300" width="776" height="372" rx="8" fill="none" stroke="#F2C97D" stroke-width="3" opacity="0.72" />
+  </g>
+
+  <!-- PROP 2: Wooden Crate & Cushion (Upper Right) -->
+  <g transform="translate(1280, 224)" filter="url(#drop-md)">
+    <rect x="0" y="0" width="218" height="172" rx="14" fill="#6E4E3B" />
+    <rect x="10" y="10" width="198" height="48" rx="4" fill="#8C634A" />
+    <rect x="10" y="64" width="198" height="48" rx="4" fill="#815A43" />
+    <rect x="10" y="118" width="198" height="44" rx="4" fill="#8C634A" />
+    <!-- Cozy mustard cushion on crate -->
+    <rect x="28" y="24" width="162" height="124" rx="28" fill="#D47462" />
+    <rect x="36" y="30" width="146" height="110" rx="22" fill="#E69A72" />
+    <circle cx="109" cy="85" r="8" fill="#B55B4D" opacity="0.75" />
+  </g>
+
+  <!-- PROP 3: Terracotta Water Dish (Lower Right) -->
+  <g transform="translate(1338, 650)" filter="url(#drop-md)">
+    <circle cx="72" cy="72" r="64" fill="#A65446" />
+    <circle cx="72" cy="72" r="54" fill="#C46B5A" />
+    <!-- Water pool -->
+    <circle cx="72" cy="72" r="44" fill="#507D94" />
+    <circle cx="72" cy="72" r="38" fill="#6EA4BC" opacity="0.7" />
+    <!-- Ripples & sunset reflection -->
+    <circle cx="68" cy="68" r="18" fill="none" stroke="#FFE9BC" stroke-width="2" opacity="0.55" />
+    <ellipse cx="56" cy="54" rx="14" ry="7" fill="#FFE9BC" opacity="0.65" transform="rotate(-28 56 54)" />
+  </g>
+
+  <!-- PROP 4: Sunset Bird & Firefly Perch + Potted Terrace Plants (Bottom Left) -->
+  <g transform="translate(116, 616)" filter="url(#drop-md)">
+    <!-- Flat perch stone -->
+    <ellipse cx="110" cy="118" rx="94" ry="68" fill="#695C62" />
+    <ellipse cx="106" cy="112" rx="82" ry="56" fill="#85767D" />
+    <ellipse cx="96" cy="100" rx="48" ry="26" fill="#A49194" opacity="0.45" />
+    <!-- Potted terracotta herb/rosemary planter -->
+    <circle cx="48" cy="48" r="42" fill="#A85748" />
+    <circle cx="48" cy="48" r="34" fill="#4C3832" />
+    <g fill="#5B8654">
+      <ellipse cx="32" cy="34" rx="22" ry="11" transform="rotate(-35 32 34)" />
+      <ellipse cx="64" cy="36" rx="22" ry="11" transform="rotate(32 64 36)" />
+      <ellipse cx="34" cy="62" rx="22" ry="11" transform="rotate(35 34 62)" />
+      <ellipse cx="64" cy="62" rx="22" ry="11" transform="rotate(-32 64 62)" />
+    </g>
+    <g fill="#7CAA6E">
+      <ellipse cx="48" cy="28" rx="16" ry="9" />
+      <ellipse cx="48" cy="66" rx="16" ry="9" />
+      <circle cx="48" cy="48" r="11" />
+    </g>
+  </g>
+
+  <!-- CAT 1: Japanese Bobtail Mi-Ke Calico perched on Brick Parapet -->
+  <g transform="translate(778, 134)" filter="url(#drop-md)">
+    <!-- Pom-pom bobtail -->
+    <circle cx="-54" cy="4" r="17" fill="#D95632" />
+    <circle cx="-52" cy="2" r="12" fill="#FBF7F0" opacity="0.7" />
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="52" ry="28" fill="#FBF7F0" />
+    <!-- Calico patches -->
+    <ellipse cx="-14" cy="-8" rx="22" ry="16" fill="#D95632" />
+    <ellipse cx="10" cy="10" rx="20" ry="14" fill="#242022" />
+    <!-- Head looking out toward sunset -->
+    <circle cx="44" cy="-8" r="24" fill="#FBF7F0" />
+    <path d="M 28,-28 C 44,-36, 58,-28, 60,-14 Z" fill="#D95632" />
+    <!-- Large upright ears -->
+    <polygon points="30,-26 38,-44 48,-28" fill="#D95632" />
+    <polygon points="52,-28 62,-44 66,-24" fill="#242022" />
+    <circle cx="48" cy="-24" r="3" fill="#DDA228" />
+  </g>
+
+  <!-- CAT 2: Abyssinian Ruddy Cinnamon stretched across Kilim Rug -->
+  <g transform="translate(790, 488) rotate(-14)" filter="url(#drop-md)">
+    <!-- Sleek dark-tipped tail -->
+    <path d="M -70 4 C -106 -14, -138 8, -166 -4" stroke="#C97336" stroke-width="11" stroke-linecap="round" fill="none" />
+    <path d="M -144 0 C -154 -2, -160 -3, -166 -4" stroke="#26150A" stroke-width="10" stroke-linecap="round" fill="none" />
+    <!-- Stretched paws -->
+    <ellipse cx="78" cy="-16" rx="18" ry="8" fill="#BF6B31" />
+    <ellipse cx="74" cy="16" rx="18" ry="8" fill="#BF6B31" />
+    <!-- Lithe body -->
+    <ellipse cx="0" cy="0" rx="74" ry="30" fill="#C97336" />
+    <ellipse cx="-2" cy="-2" rx="60" ry="19" fill="#E69F62" opacity="0.52" />
+    <!-- Dorsal ticking stripe -->
+    <path d="M -58 0 L 42 0" stroke="#994E1C" stroke-width="8" stroke-linecap="round" opacity="0.55" />
+    <!-- Head -->
+    <ellipse cx="64" cy="0" rx="26" ry="23" fill="#C97336" />
+    <!-- Huge cupped ears -->
+    <polygon points="46,-20 62,-40 68,-14" fill="#8F461A" />
+    <polygon points="46,20 62,40 68,14" fill="#8F461A" />
+    <polygon points="51,-19 61,-32 64,-15" fill="#E3A89E" />
+    <polygon points="51,19 61,32 64,15" fill="#E3A89E" />
+    <!-- Expressive golden almond eyes -->
+    <ellipse cx="75" cy="-9" rx="4.5" ry="5.5" fill="#E0A224" />
+    <ellipse cx="75" cy="9" rx="4.5" ry="5.5" fill="#E0A224" />
+    <circle cx="76" cy="-9" r="2" fill="#26150A" />
+    <circle cx="76" cy="9" r="2" fill="#26150A" />
+  </g>
+
+  <!-- CAT 3: Siamese Seal Point by the Terracotta Water Dish -->
+  <g transform="translate(1248, 704) rotate(14)" filter="url(#drop-md)">
+    <path d="M -54 2 C -84 18, -104 4, -124 14" stroke="#3A281F" stroke-width="8" stroke-linecap="round" fill="none" />
+    <ellipse cx="0" cy="0" rx="56" ry="26" fill="#F0E1CA" />
+    <ellipse cx="-2" cy="-3" rx="44" ry="17" fill="#FAF0E2" opacity="0.7" />
+    <ellipse cx="42" cy="-16" rx="12" ry="6" fill="#3E2B21" />
+    <ellipse cx="42" cy="16" rx="12" ry="6" fill="#3E2B21" />
+    <ellipse cx="56" cy="0" rx="24" ry="20" fill="#F0E1CA" />
+    <ellipse cx="64" cy="0" rx="15" ry="14" fill="#3F2C22" />
+    <polygon points="40,-18 54,-36 60,-14" fill="#3D2A20" />
+    <polygon points="40,18 54,36 60,14" fill="#3D2A20" />
+    <circle cx="67" cy="-7" r="3.4" fill="#5CC2FF" />
+    <circle cx="67" cy="7" r="3.4" fill="#5CC2FF" />
+  </g>
+
+  <!-- PROP 5: Edison String Lights strung across terrace -->
+  <g>
+    <!-- Draped cords -->
+    <path d="M 0 210 Q 420 340, 820 220 T 1600 280" stroke="#281E24" stroke-width="3.5" fill="none" opacity="0.82" />
+    <path d="M 0 420 Q 320 510, 620 400" stroke="#281E24" stroke-width="3" fill="none" opacity="0.72" />
+    <!-- Glowing Edison Bulbs -->
+    <g>
+      <circle cx="190" cy="258" r="78" fill="url(#bulb-glow)" />
+      <circle cx="190" cy="258" r="9" fill="#FFE9BC" />
+
+      <circle cx="430" cy="276" r="88" fill="url(#bulb-glow)" />
+      <circle cx="430" cy="276" r="10" fill="#FFE9BC" />
+
+      <circle cx="680" cy="244" r="82" fill="url(#bulb-glow)" />
+      <circle cx="680" cy="244" r="9" fill="#FFE9BC" />
+
+      <circle cx="960" cy="204" r="86" fill="url(#bulb-glow)" />
+      <circle cx="960" cy="204" r="10" fill="#FFE9BC" />
+
+      <circle cx="1230" cy="222" r="90" fill="url(#bulb-glow)" />
+      <circle cx="1230" cy="222" r="10" fill="#FFE9BC" />
+
+      <circle cx="1470" cy="264" r="80" fill="url(#bulb-glow)" />
+      <circle cx="1470" cy="264" r="9" fill="#FFE9BC" />
+
+      <circle cx="240" cy="456" r="76" fill="url(#bulb-glow)" />
+      <circle cx="240" cy="456" r="9" fill="#FFE9BC" />
+
+      <circle cx="480" cy="434" r="72" fill="url(#bulb-glow)" />
+      <circle cx="480" cy="434" r="8.5" fill="#FFE9BC" />
+    </g>
+  </g>
+
+  <!-- Rose-gold sunset atmospheric wash -->
+  <rect width="1600" height="900" fill="url(#sunset-wash)" />
+
+  <!-- Floating dusk fireflies & warm motes -->
+  <g fill="#FFE27A">
+    <circle cx="236" cy="672" r="4" opacity="0.92" />
+    <circle cx="312" cy="592" r="3" opacity="0.82" />
+    <circle cx="146" cy="768" r="3.4" opacity="0.88" />
+    <circle cx="942" cy="378" r="3" opacity="0.76" />
+    <circle cx="1116" cy="604" r="3.6" opacity="0.85" />
+    <circle cx="604" cy="744" r="2.8" opacity="0.72" />
+  </g>
+
+  <!-- Dusk terrace vignette -->
+  <rect width="1600" height="900" fill="url(#rooftop-vignette)" />
+</svg>

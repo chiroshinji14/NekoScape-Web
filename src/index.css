@@ -1,0 +1,278 @@
+@import "tailwindcss";
+
+@theme {
+  /* Light Latte semantic surface palette (from UiDesignSystem.cs) */
+  --color-ns-base: #F6EFE5;
+  --color-ns-elevated: #EDE2D3;
+  --color-ns-control: #E4D5C3;
+  --color-ns-control-hover: #D8C5AE;
+  --color-ns-control-pressed: #CBB59C;
+  --color-ns-track: #DFD0BD;
+  --color-ns-ivory: #FFF9F1;
+
+  /* Ink hierarchy */
+  --color-ns-ink: #221811;
+  --color-ns-ink-secondary: #5A4637;
+  --color-ns-ink-tertiary: #846E5B;
+
+  /* Brand & semantic accents */
+  --color-ns-honey: #D98E32;
+  --color-ns-honey-hover: #B06B14;
+  --color-ns-honey-pressed: #C07A22;
+  --color-ns-ink-on-honey: #FFFDF9;
+  --color-ns-coral: #C84632;
+  --color-ns-sage: #3E8A4C;
+  --color-ns-cyan: #1A8CA8;
+
+  /* Typography */
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Corner radius tokens (matching UiDesignSystem.cs) */
+  --radius-popover: 24px;
+  --radius-canvas: 22px;
+  --radius-studio: 21px;
+  --radius-card: 14px;
+  --radius-tile: 12px;
+  --radius-compact: 10px;
+}
+
+:root {
+  /* Raw CSS custom properties matching UiDesignSystem.cs Light Latte */
+  --ns-base: #F6EFE5;
+  --ns-elevated: #EDE2D3;
+  --ns-control: #E4D5C3;
+  --ns-control-hover: #D8C5AE;
+  --ns-control-pressed: #CBB59C;
+  --ns-track: #DFD0BD;
+  --ns-ivory: #FFF9F1;
+
+  --ns-ink: #221811;
+  --ns-ink-secondary: #5A4637;
+  --ns-ink-tertiary: #846E5B;
+
+  --ns-honey: #D98E32;
+  --ns-honey-hover: #B06B14;
+  --ns-honey-pressed: #C07A22;
+  --ns-ink-on-honey: #FFFDF9;
+
+  --ns-coral: #C84632;
+  --ns-sage: #3E8A4C;
+  --ns-cyan: #1A8CA8;
+
+  /* Specular, hairline, and 3-layer warm ambient shadow tokens */
+  --ns-specular-top: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --ns-hairline: rgba(58, 40, 27, 0.11);
+  --ns-shadow-far: 0 22px 48px -12px rgba(58, 38, 24, 0.04);
+  --ns-shadow-mid: 0 10px 24px -6px rgba(58, 38, 24, 0.09);
+  --ns-shadow-near: 0 2px 6px -1px rgba(58, 38, 24, 0.16);
+  --ns-shadow-ambient:
+    0 22px 48px -12px rgba(58, 38, 24, 0.04),
+    0 10px 24px -6px rgba(58, 38, 24, 0.09),
+    0 2px 6px -1px rgba(58, 38, 24, 0.16);
+  --ns-shadow-elevated:
+    0 28px 60px -14px rgba(58, 38, 24, 0.06),
+    0 14px 30px -8px rgba(58, 38, 24, 0.11),
+    0 3px 8px -1px rgba(58, 38, 24, 0.16);
+
+  /* Emil Kowalski + Apple HIG custom easing curves */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    background-color: var(--ns-base);
+    color: var(--ns-ink);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--ns-base);
+    color: var(--ns-ink);
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--ns-ink);
+    letter-spacing: -0.02em;
+  }
+
+  /* Accessible keyboard focus ring: 2px honey-amber with warm offset */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--ns-honey);
+    outline-offset: 2px;
+  }
+
+  /* Ensure mobile form inputs stay >= 16px to prevent iOS/mobile auto-zoom */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================================
+   Apple Translucent Glass Surface Utilities (Light Latte)
+   ============================================================================ */
+
+.ns-glass-nav {
+  background-color: rgba(246, 239, 229, 0.84);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    var(--ns-specular-top),
+    0 1px 0 var(--ns-hairline),
+    0 8px 24px -8px rgba(58, 38, 24, 0.08);
+}
+
+.ns-glass-panel {
+  background-color: rgba(237, 226, 211, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--ns-specular-top), var(--ns-shadow-ambient);
+}
+
+.ns-glass-card {
+  background-color: rgba(255, 249, 241, 0.88);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    var(--ns-specular-top),
+    0 14px 32px -10px rgba(58, 38, 24, 0.04),
+    0 6px 16px -4px rgba(58, 38, 24, 0.08),
+    0 1px 3px rgba(58, 38, 24, 0.12);
+}
+
+.ns-specular-sheen {
+  box-shadow: var(--ns-specular-top);
+}
+
+.ns-hairline-t {
+  border-top: 1px solid var(--ns-hairline);
+}
+
+.ns-hairline-b {
+  border-bottom: 1px solid var(--ns-hairline);
+}
+
+.ns-hairline-divider {
+  height: 1px;
+  background-color: var(--ns-hairline);
+}
+
+.ns-segmented-track {
+  background-color: rgba(223, 208, 189, 0.88);
+  border-radius: 9999px;
+}
+
+.ns-segmented-thumb {
+  background-color: rgba(255, 249, 241, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 2px 6px -1px rgba(58, 38, 24, 0.14);
+}
+
+/* Tactile press feedback (Emil Kowalski 1.0 -> 0.97) */
+.ns-pressable {
+  transition-property: transform, background-color, color, box-shadow, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.ns-pressable:active {
+  transform: scale(0.97);
+}
+
+.ns-btn-primary {
+  background-color: var(--ns-honey);
+  color: var(--ns-ink-on-honey);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 8px 20px -6px rgba(176, 107, 20, 0.34),
+    0 2px 4px -1px rgba(58, 38, 24, 0.14);
+  transition-property: transform, background-color, box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.ns-btn-primary:hover {
+  background-color: var(--ns-honey-hover);
+}
+
+.ns-btn-primary:active {
+  background-color: var(--ns-honey-pressed);
+  transform: scale(0.97);
+}
+
+.ns-btn-secondary {
+  background-color: var(--ns-control);
+  color: var(--ns-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition-property: transform, background-color, box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.ns-btn-secondary:hover {
+  background-color: var(--ns-control-hover);
+}
+
+.ns-btn-secondary:active {
+  background-color: var(--ns-control-pressed);
+  transform: scale(0.97);
+}
+
+.ns-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   Accessibility: Reduced Motion & Reduced Transparency
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .ns-pressable:active,
+  .ns-btn-primary:active,
+  .ns-btn-secondary:active {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ns-glass-nav {
+    background-color: var(--ns-base);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .ns-glass-panel {
+    background-color: var(--ns-elevated);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .ns-glass-card {
+    background-color: var(--ns-ivory);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
