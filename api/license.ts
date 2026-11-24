@@ -1,6 +1,6 @@
-import { type ApiRequest, type ApiResponse, getClientIp, getQueryParam, sendJson } from './_lib/http';
-import { maskEmail, mintProLicenseKey } from './_lib/licenseCrypto';
-import { fetchPolarCheckoutSession, isPaidProCheckout } from './_lib/polarVerify';
+import { type ApiRequest, type ApiResponse, getClientIp, getQueryParam, sendJson } from './_lib/http.js';
+import { maskEmail, mintProLicenseKey } from './_lib/licenseCrypto.js';
+import { fetchPolarCheckoutSession, isPaidProCheckout } from './_lib/polarVerify.js';
 
 const CHECKOUT_ID_REGEX = /^[A-Za-z0-9_-]{10,128}$/;
 const RATE_WINDOW_MS = 60_000;

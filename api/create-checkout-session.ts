@@ -4,8 +4,8 @@ import {
   isOriginAllowed,
   resolveRequestOrigin,
   sendJson,
-} from './_lib/http';
-import { createPolarCheckoutSession } from './_lib/polarVerify';
+} from './_lib/http.js';
+import { createPolarCheckoutSession } from './_lib/polarVerify.js';
 
 export default async function handler(req: ApiRequest, res: ApiResponse): Promise<void> {
   if (req.method !== 'POST') {
