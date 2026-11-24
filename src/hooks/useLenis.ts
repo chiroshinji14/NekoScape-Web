@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -44,6 +45,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
   const [reducedMotion, setReducedMotion] = useState<boolean>(getPrefersReducedMotion);
   const lenisRef = useRef<Lenis | null>(null);
   const prevPathnameRef = useRef<string>(pathname);
+  const isInitialMountRef = useRef<boolean>(true);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -127,6 +129,10 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     }
 
     if (lenisRef.current) {
+      if (immediate) {
+        // Synchronize native scroll immediately so pre-paint jumps never flash y=0.
+        window.scrollTo({ top, behavior: 'auto' });
+      }
       lenisRef.current.resize();
       lenisRef.current.scrollTo(top, {
         immediate,
@@ -142,15 +148,13 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const isCrossRoute = prevPathnameRef.current !== pathname;
+    const isInitialMount = isInitialMountRef.current;
     prevPathnameRef.current = pathname;
+    isInitialMountRef.current = false;
 
     if (hash) {
-      let raf1 = 0;
-      let raf2 = 0;
-      let settleTimer = 0;
-
       const jumpToHash = (immediate: boolean) => {
         ScrollTrigger.refresh();
         lenisRef.current?.resize();
@@ -161,34 +165,40 @@ export function LenisProvider({ children }: { children: ReactNode }) {
         }
       };
 
-      if (isCrossRoute) {
-        // Wait for the destination route and any GSAP pins to mount before measuring target Y
-        raf1 = window.requestAnimationFrame(() => {
-          raf2 = window.requestAnimationFrame(() => {
-            jumpToHash(true);
-            settleTimer = window.setTimeout(() => {
-              jumpToHash(true);
-            }, 140);
-          });
+      if (isCrossRoute || isInitialMount) {
+        // Jump synchronously before first paint so the landing hero never flashes.
+        jumpToHash(true);
+        const rafId = window.requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          lenisRef.current?.resize();
+          const el = document.querySelector<HTMLElement>(hash);
+          if (el) {
+            const targetTop = Math.max(0, Math.round(el.getBoundingClientRect().top + window.scrollY - 72));
+            if (Math.abs(targetTop - window.scrollY) > 2) {
+              scrollTo(el, { offset: -72, immediate: true });
+              ScrollTrigger.update();
+            }
+          }
         });
-      } else {
-        raf1 = window.requestAnimationFrame(() => {
-          jumpToHash(reducedMotion);
-        });
+        return () => {
+          window.cancelAnimationFrame(rafId);
+        };
       }
 
+      const rafId = window.requestAnimationFrame(() => {
+        jumpToHash(reducedMotion);
+      });
       return () => {
-        window.cancelAnimationFrame(raf1);
-        window.cancelAnimationFrame(raf2);
-        window.clearTimeout(settleTimer);
+        window.cancelAnimationFrame(rafId);
       };
     }
 
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
     if (lenisRef.current) {
       lenisRef.current.resize();
       lenisRef.current.scrollTo(0, { immediate: true, force: true });
-    } else if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
     }
 
     const rafId = window.requestAnimationFrame(() => {

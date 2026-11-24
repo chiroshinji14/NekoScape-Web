@@ -210,8 +210,9 @@ export function FeaturesBento() {
               Every display
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-ns-ink-secondary">
-              Target any PC monitor or laptop screen in your setup. Each display pauses on its own
-              the moment you focus a full-screen app.
+              Target your primary display, pick any specific screen in a dual or multi-monitor
+              setup, or run across all connected displays simultaneously with independent
+              per-screen pause.
             </p>
           </div>
         </article>

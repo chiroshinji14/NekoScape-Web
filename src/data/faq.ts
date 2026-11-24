@@ -35,13 +35,19 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 'monitors',
     question: 'Does it work with multiple monitors?',
     answer:
-      'Yes. You can place NekoScape on your primary screen or choose any connected display.',
+      'Yes. In Settings or the tray menu, you can target your primary display, pick any specific screen, or run across all connected displays simultaneously. Each screen pauses independently when a game or full-screen app covers it.',
   },
   {
     id: 'subscription',
-    question: 'Is Studio a subscription?',
+    question: 'Is NekoScape Pro a subscription?',
     answer:
-      'No. Pay once and keep NekoScape Studio forever, including all v2 updates.',
+      'No. Pay $2.49 once and keep NekoScape Pro forever, including all v2 updates.',
+  },
+  {
+    id: 'activation',
+    question: 'How do license keys and installation work?',
+    answer:
+      'Download the free Windows app once. After upgrading to Pro, you get a license key right away—paste it in Settings → License (or click Activate in NekoScape) with no account required.',
   },
   {
     id: 'uninstall',

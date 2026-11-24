@@ -11,9 +11,10 @@ import { FAQ_ITEMS } from '../data/faq';
 
 export interface HomePageProps {
   onOpenDownload: () => void;
+  onOpenCheckout?: () => void;
 }
 
-export function HomePage({ onOpenDownload }: HomePageProps) {
+export function HomePage({ onOpenDownload, onOpenCheckout }: HomePageProps) {
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
 
   return (
@@ -136,7 +137,7 @@ export function HomePage({ onOpenDownload }: HomePageProps) {
 
                 <button
                   type="button"
-                  onClick={onOpenDownload}
+                  onClick={tier.id === 'pro' ? (onOpenCheckout ?? onOpenDownload) : onOpenDownload}
                   className={[
                     'mt-8 inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center rounded-full px-5 text-sm font-semibold',
                     tier.recommended ? 'ns-btn-primary' : 'ns-btn-secondary',

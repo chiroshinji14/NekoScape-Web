@@ -1,5 +1,6 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { CheckCircle, DownloadSimple, X } from '@phosphor-icons/react';
+import { useAnimatedModal } from '../hooks/useAnimatedModal';
 
 export interface DownloadSheetProps {
   isOpen: boolean;
@@ -10,27 +11,17 @@ type BuildKind = 'installer' | 'portable';
 
 export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
   const titleId = useId();
-  const [shouldRender, setShouldRender] = useState(isOpen);
-  const [entered, setEntered] = useState(false);
   const [selectedBuild, setSelectedBuild] = useState<BuildKind | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      const raf = requestAnimationFrame(() => {
-        setEntered(true);
-      });
-      return () => cancelAnimationFrame(raf);
-    }
+  const handleAfterClose = useCallback(() => {
+    setSelectedBuild(null);
+  }, []);
 
-    setEntered(false);
-    const timer = window.setTimeout(() => {
-      setShouldRender(false);
-      setSelectedBuild(null);
-    }, 180);
-    return () => window.clearTimeout(timer);
-  }, [isOpen]);
+  const { shouldRender, entered } = useAnimatedModal(isOpen, {
+    exitDurationMs: 180,
+    onAfterClose: handleAfterClose,
+  });
 
   useEffect(() => {
     if (!isOpen) return;
@@ -67,19 +58,27 @@ export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
         tabIndex={-1}
         aria-label="Close download sheet"
         onClick={onClose}
-        className="fixed inset-0 cursor-default bg-ns-ink/30 backdrop-blur-sm transition-opacity duration-200 ease-[var(--ease-out)]"
-        style={{ opacity: entered ? 1 : 0 }}
+        className="fixed inset-0 cursor-default bg-ns-ink/30 backdrop-blur-sm"
+        style={{
+          opacity: entered ? 1 : 0,
+          transitionProperty: 'opacity',
+          transitionDuration: entered ? '240ms' : '160ms',
+          transitionTimingFunction: 'var(--ease-out)',
+        }}
       />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 w-full max-w-md rounded-[24px] bg-ns-ivory p-7 text-ns-ink transition-[transform,opacity] duration-200 ease-[var(--ease-out)] sm:p-8"
+        className="relative z-10 w-full max-w-md rounded-[24px] bg-ns-ivory p-7 text-ns-ink will-change-[transform,opacity] sm:p-8"
         style={{
           boxShadow: 'var(--ns-specular-top), var(--ns-shadow-elevated)',
-          transform: entered ? 'scale(1)' : 'scale(0.95)',
+          transform: entered ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 14px, 0) scale(0.95)',
           opacity: entered ? 1 : 0,
+          transitionProperty: 'transform, opacity',
+          transitionDuration: entered ? '240ms' : '160ms',
+          transitionTimingFunction: 'var(--ease-out)',
         }}
       >
         <div className="flex items-start justify-between gap-4">
@@ -111,7 +110,8 @@ export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
         </div>
 
         <p className="mt-3 text-base leading-relaxed text-ns-ink-secondary">
-          Ready for Windows 10 and Windows 11. Free to start, with a quick guided setup.
+          One free Windows 10 &amp; 11 build. Start free right away, and unlock NekoScape Pro
+          anytime via Settings → License.
         </p>
 
         <div className="mt-6 flex flex-col gap-3">
@@ -121,7 +121,7 @@ export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
             className="ns-btn-primary inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold"
           >
             <DownloadSimple size={18} weight="bold" aria-hidden="true" />
-            <span>Download Installer for Windows</span>
+            <span>Download Installer (~3.0 MB)</span>
           </button>
 
           <button
@@ -147,8 +147,8 @@ export function DownloadSheet({ isOpen, onClose }: DownloadSheetProps) {
             />
             <p>
               {selectedBuild === 'installer'
-                ? 'NekoScape-Setup.exe (18.4 MB) is ready. Open it to set up your first room.'
-                : 'NekoScape-win-x64.zip (19.1 MB) is ready. Unzip anywhere and run NekoScape.exe.'}
+                ? 'NekoScape-Setup.exe (~3.0 MB) is ready. Run it to set up your first room, and paste a Pro key in Settings → License anytime.'
+                : 'NekoScape-win-x64.zip (~3.1 MB) is ready. Unzip anywhere, run NekoScape.exe, and unlock Pro anytime in Settings → License.'}
             </p>
           </div>
         ) : null}

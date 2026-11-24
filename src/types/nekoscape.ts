@@ -279,7 +279,7 @@ export interface ChangelogEntry {
 }
 
 export interface PricingTier {
-  id: 'personal' | 'studio';
+  id: 'personal' | 'pro';
   name: string;
   priceLabel: string;
   cadence: string;
