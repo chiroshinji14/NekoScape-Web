@@ -5,6 +5,7 @@ dist-ssr/
 
 # Local environment & logs
 .env*
+!.env.example
 *.local
 npm-debug.log*
 yarn-debug.log*

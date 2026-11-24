@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -31,7 +31,7 @@ export function ScrollExpandHero({ onOpenDownload }: ScrollExpandHeroProps) {
   const { reducedMotion } = useLenis();
   const [introOffscreen, setIntroOffscreen] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const sectionEl = sectionRef.current;
     const pinEl = pinWrapperRef.current;
     const introEl = introRef.current;

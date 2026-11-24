@@ -11,28 +11,44 @@ import { LenisProvider } from './hooks/useLenis';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { DownloadSheet } from './components/DownloadSheet';
+import { CheckoutSheet } from './components/CheckoutSheet';
 import { HomePage } from './pages/HomePage';
 import { ScenesPage } from './pages/ScenesPage';
 import { ChangelogPage } from './pages/ChangelogPage';
+import { CheckoutSuccessPage } from './pages/CheckoutSuccessPage';
 
-function DownloadRouteView({ onOpenDownload }: { onOpenDownload: () => void }) {
+declare global {
+  interface Window {
+    openDownload?: () => void;
+  }
+}
+
+function DownloadRouteView({
+  onOpenDownload,
+  onOpenCheckout,
+}: {
+  onOpenDownload: () => void;
+  onOpenCheckout: () => void;
+}) {
   useEffect(() => {
     onOpenDownload();
   }, [onOpenDownload]);
 
   return (
     <main className="flex-1">
-      <HomePage onOpenDownload={onOpenDownload} />
+      <HomePage onOpenDownload={onOpenDownload} onOpenCheckout={onOpenCheckout} />
     </main>
   );
 }
 
 function AppShell() {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const openDownload = useCallback(() => {
+    setIsCheckoutOpen(false);
     setIsDownloadOpen(true);
   }, []);
 
@@ -42,6 +58,22 @@ function AppShell() {
       navigate('/', { replace: true });
     }
   }, [location.pathname, navigate]);
+
+  const openCheckout = useCallback(() => {
+    setIsDownloadOpen(false);
+    setIsCheckoutOpen(true);
+  }, []);
+
+  const closeCheckout = useCallback(() => {
+    setIsCheckoutOpen(false);
+  }, []);
+
+  useEffect(() => {
+    window.openDownload = openDownload;
+    return () => {
+      delete window.openDownload;
+    };
+  }, [openDownload]);
 
   return (
     <LenisProvider>
@@ -61,7 +93,7 @@ function AppShell() {
               path="/"
               element={
                 <main>
-                  <HomePage onOpenDownload={openDownload} />
+                  <HomePage onOpenDownload={openDownload} onOpenCheckout={openCheckout} />
                 </main>
               }
             />
@@ -81,13 +113,26 @@ function AppShell() {
                 </main>
               }
             />
+            <Route
+              path="/checkout/success"
+              element={
+                <main>
+                  <CheckoutSuccessPage onOpenDownload={openDownload} />
+                </main>
+              }
+            />
             <Route path="/features" element={<Navigate to="/#features" replace />} />
             <Route path="/breeds" element={<Navigate to="/#breeds" replace />} />
             <Route path="/pricing" element={<Navigate to="/#pricing" replace />} />
             <Route path="/faq" element={<Navigate to="/#faq" replace />} />
             <Route
               path="/download"
-              element={<DownloadRouteView onOpenDownload={openDownload} />}
+              element={
+                <DownloadRouteView
+                  onOpenDownload={openDownload}
+                  onOpenCheckout={openCheckout}
+                />
+              }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
@@ -95,6 +140,11 @@ function AppShell() {
 
         <Footer onOpenDownload={openDownload} />
         <DownloadSheet isOpen={isDownloadOpen} onClose={closeDownload} />
+        <CheckoutSheet
+          isOpen={isCheckoutOpen}
+          onClose={closeCheckout}
+          onOpenDownload={openDownload}
+        />
       </div>
     </LenisProvider>
   );
