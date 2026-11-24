@@ -1,10 +1,10 @@
-import { type ApiRequest, type ApiResponse, getHeaderValue, readRawBody, sendJson } from './_lib/http';
-import { maskEmail, mintProLicenseKey } from './_lib/licenseCrypto';
+import { type ApiRequest, type ApiResponse, getHeaderValue, readRawBody, sendJson } from './_lib/http.js';
+import { maskEmail, mintProLicenseKey } from './_lib/licenseCrypto.js';
 import {
   isPaidProOrder,
   type PolarOrder,
   verifyPolarWebhookSignature,
-} from './_lib/polarVerify';
+} from './_lib/polarVerify.js';
 
 export const config = {
   api: {
