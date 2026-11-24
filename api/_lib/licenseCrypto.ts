@@ -16,8 +16,34 @@ export interface MintProLicenseInput {
 }
 
 function normalizePrivateKeyPem(rawPem: string): string {
-  const trimmed = rawPem.trim().replace(/^"(.*)"$/s, '$1');
-  return trimmed.replace(/\\n/g, '\n');
+  let candidate = rawPem.trim();
+  if (
+    (candidate.startsWith('"') && candidate.endsWith('"')) ||
+    (candidate.startsWith("'") && candidate.endsWith("'"))
+  ) {
+    candidate = candidate.slice(1, -1).trim();
+  }
+
+  if (!candidate.includes('PRIVATE KEY') && /^[A-Za-z0-9+/=\s]+$/.test(candidate)) {
+    const decoded = Buffer.from(candidate.replace(/\s+/g, ''), 'base64').toString('utf8');
+    if (decoded.includes('PRIVATE KEY')) {
+      candidate = decoded.trim();
+    }
+  }
+
+  candidate = candidate
+    .replace(/\\\\r\\\\n|\\\\n|\\r\\n|\\n/g, '\n')
+    .replace(/\r\n?/g, '\n');
+
+  const pemMatch = candidate.match(/-----BEGIN ([A-Z0-9 ]+)-----([\s\S]*?)-----END \1-----/);
+  if (!pemMatch) {
+    return candidate;
+  }
+
+  const label = pemMatch[1].trim();
+  const base64Body = pemMatch[2].replace(/\s+/g, '');
+  const wrappedLines = base64Body.match(/.{1,64}/g) ?? [];
+  return `-----BEGIN ${label}-----\n${wrappedLines.join('\n')}\n-----END ${label}-----\n`;
 }
 
 export function encodeBase32Unpadded(bytes: Uint8Array): string {
@@ -84,16 +110,33 @@ export function mintProLicenseKey({
   if (!sessionId) {
     throw new Error('sessionId is required to mint a license key.');
   }
-  if (!privateKeyPem || !privateKeyPem.includes('PRIVATE KEY')) {
+
+  const normalizedPem = privateKeyPem ? normalizePrivateKeyPem(privateKeyPem) : '';
+  if (!normalizedPem || !normalizedPem.includes('PRIVATE KEY')) {
     throw new Error('NEKOSCAPE_LICENSE_PRIVATE_KEY_PEM is missing or invalid.');
   }
 
   const nonce = deriveOrderNonce(orderSecret, sessionId);
   const payload8 = buildLicensePayload8(LICENSE_TIER_PRO, issuedUtcMs, nonce);
-  const normalizedPem = normalizePrivateKeyPem(privateKeyPem);
+
+  let keyObject: crypto.KeyObject;
+  try {
+    keyObject = crypto.createPrivateKey(normalizedPem);
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : 'Unable to parse PEM.';
+    throw new Error(
+      `NEKOSCAPE_LICENSE_PRIVATE_KEY_PEM could not be decoded (${detail}). Ensure it is an unencrypted ECDSA P-256 PKCS#8 PEM private key.`,
+    );
+  }
+
+  if (keyObject.asymmetricKeyType !== 'ec' || keyObject.asymmetricKeyDetails?.namedCurve !== 'prime256v1') {
+    throw new Error(
+      `NEKOSCAPE_LICENSE_PRIVATE_KEY_PEM must be an ECDSA prime256v1 (P-256) key, got ${keyObject.asymmetricKeyType ?? 'unknown'} (${keyObject.asymmetricKeyDetails?.namedCurve ?? 'unknown'}).`,
+    );
+  }
 
   const sig64 = crypto.sign('sha256', payload8, {
-    key: normalizedPem,
+    key: keyObject,
     dsaEncoding: 'ieee-p1363',
   });
 
